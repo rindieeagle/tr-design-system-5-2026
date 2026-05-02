@@ -67,8 +67,8 @@ A common mistake: stacking shadow-2xl on top of glass without a tint. The result
 
 | Stack | Family | Weights | Use |
 |-------|--------|---------|-----|
-| Display | **Poppins** (brand) | 600, 700, 800 | All headlines, prices, big numbers |
-| Body | **Poppins** (brand) | 300, 400, 500 | Paragraphs, UI labels, captions |
+| Display | **Plus Jakarta Sans** (brand) | 600, 700, 800 | All headlines, prices, big numbers |
+| Body | **Inter** | 300, 400, 500, 600 | Paragraphs, UI labels, captions |
 | Serif | **Playfair Display** | 400, italic | The single founder quote, optional |
 | Mono | system mono | 400 | Code, token names in this docs system |
 

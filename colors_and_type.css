@@ -4,21 +4,7 @@
    Style: LIGHT remix — ink-on-paper with peacock + lavender accents
    ========================================================================== */
 
-@font-face { font-family: "Poppins"; src: url("fonts/Poppins-Thin.ttf") format("truetype");           font-weight: 100; font-style: normal; font-display: swap; }
-@font-face { font-family: "Poppins"; src: url("fonts/Poppins-ThinItalic.ttf") format("truetype");     font-weight: 100; font-style: italic; font-display: swap; }
-@font-face { font-family: "Poppins"; src: url("fonts/Poppins-ExtraLight.ttf") format("truetype");     font-weight: 200; font-style: normal; font-display: swap; }
-@font-face { font-family: "Poppins"; src: url("fonts/Poppins-Light.ttf") format("truetype");          font-weight: 300; font-style: normal; font-display: swap; }
-@font-face { font-family: "Poppins"; src: url("fonts/Poppins-LightItalic.ttf") format("truetype");    font-weight: 300; font-style: italic; font-display: swap; }
-@font-face { font-family: "Poppins"; src: url("fonts/Poppins-Regular.ttf") format("truetype");        font-weight: 400; font-style: normal; font-display: swap; }
-@font-face { font-family: "Poppins"; src: url("fonts/Poppins-Italic.ttf") format("truetype");         font-weight: 400; font-style: italic; font-display: swap; }
-@font-face { font-family: "Poppins"; src: url("fonts/Poppins-Medium.ttf") format("truetype");         font-weight: 500; font-style: normal; font-display: swap; }
-@font-face { font-family: "Poppins"; src: url("fonts/Poppins-MediumItalic.ttf") format("truetype");   font-weight: 500; font-style: italic; font-display: swap; }
-@font-face { font-family: "Poppins"; src: url("fonts/Poppins-SemiBold.ttf") format("truetype");       font-weight: 600; font-style: normal; font-display: swap; }
-@font-face { font-family: "Poppins"; src: url("fonts/Poppins-SemiBoldItalic.ttf") format("truetype"); font-weight: 600; font-style: italic; font-display: swap; }
-@font-face { font-family: "Poppins"; src: url("fonts/Poppins-Bold.ttf") format("truetype");           font-weight: 700; font-style: normal; font-display: swap; }
-@font-face { font-family: "Poppins"; src: url("fonts/Poppins-ExtraBold.ttf") format("truetype");      font-weight: 800; font-style: normal; font-display: swap; }
-@font-face { font-family: "Poppins"; src: url("fonts/Poppins-ExtraBoldItalic.ttf") format("truetype");font-weight: 800; font-style: italic; font-display: swap; }
-@font-face { font-family: "Poppins"; src: url("fonts/Poppins-Black.ttf") format("truetype");          font-weight: 900; font-style: normal; font-display: swap; }
+
 
 @import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;1,400&display=swap");
 
@@ -108,14 +94,14 @@
   /* ----- DARK-context gradients (on navy/peacock backdrop) -----
      Sampled directly from the tree-of-leaves logo. Teal + cyan + blue
      do the work; lavender appears only in the dedicated accent slot. */
-  --tr-grad-primary-dark:    linear-gradient(90deg, #64C5C9 0%, #05B4DD 100%);                 /* leaf-teal → leaf-cyan · CTA */
+  --tr-grad-primary-dark:    linear-gradient(90deg, #06B6D4 0%, #0284C7 100%);                 /* cyan → sky-blue · CTA */
   --tr-grad-roadmap-dark:    linear-gradient(90deg, #64C5C9 0%, #05B4DD 50%, #0276B5 100%);    /* teal → cyan → blue */
   --tr-grad-headline-dark:   linear-gradient(90deg, #64C5C9 0%, #05B4DD 50%, #0276B5 100%);    /* teal → cyan → blue · headline */
   --tr-grad-violet-dark:     linear-gradient(90deg, #9F90C9 0%, #6E5DAA 100%);                 /* leaf-lavender → deeper lav */
   --tr-grad-backdrop-dark:   linear-gradient(135deg, #001C3F 0%, #003A6B 50%, #0276B5 100%);   /* trunk-navy → deep blue */
 
   /* ----- LIGHT-context gradients (deeper stops, read on white) ----- */
-  --tr-grad-primary-light:   linear-gradient(90deg, #001C3F 0%, #0276B5 100%);                 /* trunk-navy → leaf-blue · CTA */
+  --tr-grad-primary-light:   linear-gradient(90deg, #0E7490 0%, #0284C7 100%);                 /* peacock → sky-blue · CTA */
   --tr-grad-roadmap-light:   linear-gradient(90deg, #001C3F 0%, #0276B5 50%, #05B4DD 100%);    /* navy → blue → cyan */
   --tr-grad-headline-light:  linear-gradient(90deg, #001C3F 0%, #0276B5 50%, #05B4DD 100%);    /* navy → blue → cyan · headline */
   --tr-grad-violet-light:    linear-gradient(90deg, #9F90C9 0%, #6E5DAA 100%);                 /* leaf-lavender → deeper lav */
@@ -202,7 +188,7 @@
   --tr-dur-gradient:      15s;      /* drift animation */
 
   /* ----- Type stacks ----- */
-  --tr-font-display:      "Poppins", "Plus Jakarta Sans", "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
+  --tr-font-display:      "Plus Jakarta Sans", "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
   --tr-font-body:         "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   --tr-font-serif:        "Playfair Display", Georgia, "Times New Roman", serif;
   --tr-font-mono:         ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
@@ -397,8 +383,8 @@
 }
 .tr-btn--primary {
   background: var(--tr-grad-primary);
-  color: var(--tr-text);
-  box-shadow: var(--tr-shadow-card);
+  color: #FFFFFF;
+  box-shadow: 0 12px 28px -10px rgba(14,116,144,0.45);
 }
 .tr-btn--primary:hover { transform: scale(1.02); box-shadow: var(--tr-shadow-cta); }
 .tr-btn--primary:active { transform: scale(0.98); }
