@@ -13,6 +13,7 @@ export default defineConfig({
         main: resolve(__dirname, 'index.html'),
         magneticButton: resolve(__dirname, 'magnetic-button.html'),
         mobileShowcase: resolve(__dirname, 'mobile-showcase.html'),
+        microInteractions: resolve(__dirname, 'micro-interactions.html'),
       },
     },
   },
