@@ -1,0 +1,453 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>State Transitions — Therapist Resources</title>
+  <link rel="icon" type="image/png" href="/assets/favicon.png" />
+  <link rel="stylesheet" href="/colors_and_type.css" />
+
+  <style>
+    html, body {
+      margin: 0; padding: 0;
+      min-height: 100vh;
+      background: var(--tr-bg-base);
+      color: var(--tr-text);
+      font-family: var(--tr-font-body);
+      overflow-x: hidden;
+    }
+    body {
+      background-image: var(--tr-bg-radials);
+      background-attachment: fixed;
+    }
+
+    .page {
+      max-width: 1080px;
+      margin: 0 auto;
+      padding: 80px 48px 160px;
+      display: flex; flex-direction: column; gap: 40px;
+    }
+
+    /* Hero */
+    .hero { display: flex; flex-direction: column; gap: 12px; max-width: 760px; margin-bottom: 24px; }
+    .eyebrow {
+      font-family: var(--tr-font-mono);
+      font-size: 12px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--tr-text-accent);
+    }
+    .title { margin: 0; font-size: clamp(40px, 6vw, 64px); letter-spacing: -0.02em; line-height: 1.05; }
+    .lede  { margin: 0; color: var(--tr-text-70); max-width: 640px; line-height: 1.55; }
+
+    /* Demo wrapper */
+    .demo {
+      background: var(--tr-surface);
+      border: 1px solid var(--tr-border);
+      border-radius: var(--tr-radius-2xl);
+      box-shadow: var(--tr-shadow-soft);
+      position: relative;
+      overflow: hidden;
+    }
+    .demo-head {
+      display: flex; align-items: baseline; justify-content: space-between;
+      padding: 24px 28px 16px;
+      border-bottom: 1px solid var(--tr-border);
+      gap: 16px; flex-wrap: wrap;
+    }
+    .demo-num {
+      font-family: var(--tr-font-mono);
+      font-size: 12px;
+      letter-spacing: 0.12em;
+      color: var(--tr-text-accent);
+    }
+    .demo-name {
+      font-family: var(--tr-font-display);
+      font-weight: 700;
+      font-size: 18px;
+      letter-spacing: -0.01em;
+      color: var(--tr-text);
+      margin: 0 auto 0 12px;
+    }
+    .demo-hint {
+      font-size: 13px;
+      color: var(--tr-text-60);
+    }
+    .demo-stage {
+      position: relative;
+      padding: 56px 32px;
+      min-height: 280px;
+      background:
+        radial-gradient(at 12% 0%, rgba(6,182,212,0.05) 0px, transparent 50%),
+        radial-gradient(at 88% 100%, rgba(196,181,253,0.06) 0px, transparent 50%);
+    }
+
+    /* ========== 01 · Tab Indicator Slide (Flip) ========== */
+    .tab-bar {
+      position: relative;
+      display: inline-flex; gap: 4px;
+      padding: 6px;
+      background: var(--tr-bg-tint);
+      border: 1px solid var(--tr-border);
+      border-radius: var(--tr-radius-pill);
+      margin: 0 auto;
+    }
+    .tab-bar-wrap {
+      display: flex; justify-content: center;
+    }
+    .tab {
+      position: relative;
+      z-index: 2;
+      padding: 10px 22px;
+      border: none; cursor: pointer;
+      background: transparent;
+      font-family: var(--tr-font-display);
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--tr-text-70);
+      border-radius: var(--tr-radius-pill);
+      transition: color 200ms;
+      white-space: nowrap;
+    }
+    .tab.is-active { color: #fff; }
+    .tab:hover:not(.is-active) { color: var(--tr-text); }
+    .tab-indicator {
+      position: absolute;
+      top: 6px; bottom: 6px;
+      left: 0; width: 0;
+      background: var(--tr-grad-primary);
+      border-radius: var(--tr-radius-pill);
+      box-shadow: 0 6px 16px -4px rgba(6,182,212,0.4);
+      z-index: 1;
+      pointer-events: none;
+    }
+    .tab-panel {
+      margin-top: 28px;
+      padding: 28px;
+      max-width: 540px; margin-left: auto; margin-right: auto;
+      border-radius: var(--tr-radius-xl);
+      background: linear-gradient(180deg, rgba(255,255,255,0.85), rgba(241,247,250,0.55));
+      border: 1px solid var(--tr-border);
+      text-align: center;
+    }
+    .tab-panel h3 {
+      margin: 0 0 6px;
+      font-family: var(--tr-font-display);
+      font-weight: 700;
+      font-size: 18px;
+      letter-spacing: -0.01em;
+      color: var(--tr-text);
+    }
+    .tab-panel p {
+      margin: 0;
+      font-size: 14px;
+      color: var(--tr-text-70);
+      line-height: 1.5;
+    }
+
+    /* ========== 02 · Drawer + 03 · Sheet shared scoped chrome ========== */
+    .scoped-chrome {
+      position: relative;
+      width: 360px;
+      height: 460px;
+      max-width: 100%;
+      margin: 0 auto;
+      border-radius: 28px;
+      border: 1px solid var(--tr-border);
+      background: var(--tr-bg-paper);
+      box-shadow: 0 20px 50px -20px rgba(14,116,144,0.25);
+      overflow: hidden;
+    }
+    .sc-topbar {
+      position: relative;
+      z-index: 1;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 14px 18px;
+      border-bottom: 1px solid var(--tr-border);
+    }
+    .sc-brand {
+      font-family: var(--tr-font-display);
+      font-weight: 700;
+      font-size: 14px;
+      color: var(--tr-text);
+    }
+    .sc-iconbtn {
+      width: 36px; height: 36px;
+      display: inline-flex; align-items: center; justify-content: center;
+      border: 1px solid var(--tr-border);
+      background: var(--tr-surface);
+      border-radius: 12px;
+      cursor: pointer;
+      color: var(--tr-text-70);
+    }
+    .sc-iconbtn:hover { color: var(--tr-text-accent); border-color: var(--tr-border-hi); }
+    .sc-body {
+      position: relative;
+      padding: 24px 18px;
+      color: var(--tr-text-70);
+      font-size: 14px; line-height: 1.5;
+    }
+    .sc-card {
+      padding: 18px;
+      border-radius: 14px;
+      border: 1px solid var(--tr-border);
+      background: linear-gradient(180deg, rgba(255,255,255,0.85), rgba(241,247,250,0.55));
+    }
+    .sc-card h4 {
+      margin: 0 0 4px;
+      font-family: var(--tr-font-display);
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--tr-text);
+    }
+
+    /* Drawer (slides in from left, scoped to .scoped-chrome) */
+    .scoped-scrim {
+      position: absolute;
+      inset: 0;
+      background: rgba(15, 42, 54, 0.45);
+      -webkit-backdrop-filter: blur(2px);
+      backdrop-filter: blur(2px);
+      opacity: 0;
+      pointer-events: none;
+      z-index: 5;
+    }
+    .scoped-scrim.is-active { pointer-events: auto; }
+    .scoped-drawer {
+      position: absolute;
+      top: 0; left: 0; bottom: 0;
+      width: 260px;
+      background: var(--tr-surface);
+      border-right: 1px solid var(--tr-border);
+      box-shadow: 8px 0 32px -8px rgba(14,116,144,0.2);
+      z-index: 6;
+      transform: translateX(-100%);
+      will-change: transform;
+      display: flex; flex-direction: column;
+    }
+    .scoped-drawer-head {
+      padding: 16px 18px;
+      border-bottom: 1px solid var(--tr-border);
+      font-family: var(--tr-font-display);
+      font-weight: 700;
+      color: var(--tr-text);
+    }
+    .scoped-drawer-link {
+      display: block;
+      padding: 12px 18px;
+      color: var(--tr-text-70);
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 500;
+    }
+    .scoped-drawer-link:hover { background: var(--tr-bg-tint); color: var(--tr-text); }
+
+    /* Bottom sheet (slides up from bottom) */
+    .scoped-sheet {
+      position: absolute;
+      left: 0; right: 0; bottom: 0;
+      max-height: 70%;
+      background: var(--tr-surface);
+      border-top-left-radius: 24px;
+      border-top-right-radius: 24px;
+      box-shadow: 0 -16px 32px -8px rgba(14,116,144,0.2);
+      z-index: 6;
+      transform: translateY(100%);
+      will-change: transform;
+      display: flex; flex-direction: column;
+    }
+    .scoped-sheet-handle {
+      width: 40px; height: 4px;
+      background: var(--tr-border-hi);
+      border-radius: 2px;
+      margin: 10px auto 6px;
+      flex: 0 0 auto;
+    }
+    .scoped-sheet-title {
+      font-family: var(--tr-font-display);
+      font-weight: 700;
+      font-size: 16px;
+      color: var(--tr-text);
+      padding: 8px 22px 4px;
+    }
+    .scoped-sheet-list {
+      list-style: none; margin: 0; padding: 8px 0 16px;
+    }
+    .scoped-sheet-list li {
+      padding: 12px 22px;
+      font-size: 14px;
+      color: var(--tr-text-80);
+      cursor: pointer;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .scoped-sheet-list li:hover { background: var(--tr-bg-tint); }
+
+    /* ========== 04 · Modal Open/Close Timeline ========== */
+    .modal-trigger-wrap {
+      display: flex; flex-direction: column; align-items: center; gap: 18px;
+    }
+    .modal-trigger {
+      padding: 14px 28px;
+      border: none; cursor: pointer;
+      border-radius: var(--tr-radius-pill);
+      background: var(--tr-grad-primary);
+      color: #fff;
+      font-family: var(--tr-font-display);
+      font-size: 15px;
+      font-weight: 600;
+      box-shadow: 0 10px 28px -8px rgba(6,182,212,0.45);
+    }
+    .modal-trigger:hover { box-shadow: 0 14px 36px -8px rgba(6,182,212,0.6); }
+    .scoped-modal-stage {
+      position: relative;
+      width: 100%; min-height: 420px;
+      border-radius: 28px;
+      border: 1px solid var(--tr-border);
+      background: var(--tr-bg-paper);
+      box-shadow: 0 18px 40px -18px rgba(14,116,144,0.25);
+      overflow: hidden;
+      padding: 60px 24px;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .scoped-modal {
+      position: absolute;
+      top: 50%; left: 50%;
+      width: min(380px, calc(100% - 48px));
+      max-width: 380px;
+      padding: 28px;
+      border-radius: 20px;
+      background: var(--tr-surface);
+      border: 1px solid var(--tr-border);
+      box-shadow: 0 30px 60px -20px rgba(14,116,144,0.35);
+      /* Centering is handled in JS via xPercent/yPercent so GSAP can
+         own the full transform (no CSS/GSAP override fights). */
+      opacity: 0;
+      pointer-events: none;
+      z-index: 6;
+      will-change: transform, opacity;
+    }
+    .scoped-modal h3 {
+      margin: 0 0 8px;
+      font-family: var(--tr-font-display);
+      font-weight: 700;
+      font-size: 20px;
+      letter-spacing: -0.01em;
+      color: var(--tr-text);
+    }
+    .scoped-modal p {
+      margin: 0 0 18px;
+      color: var(--tr-text-70);
+      font-size: 14px;
+      line-height: 1.55;
+    }
+    .scoped-modal-foot {
+      display: flex; justify-content: flex-end; gap: 8px;
+    }
+    .modal-btn {
+      padding: 10px 18px;
+      border-radius: var(--tr-radius-pill);
+      cursor: pointer;
+      font-family: var(--tr-font-display);
+      font-size: 13px;
+      font-weight: 600;
+      border: 1px solid var(--tr-border-hi);
+      background: var(--tr-surface);
+      color: var(--tr-text-80);
+    }
+    .modal-btn--primary {
+      background: var(--tr-grad-primary);
+      color: #fff;
+      border-color: transparent;
+    }
+
+    /* ========== 05 · Cursor-Aware Orb Parallax ========== */
+    .amb-stage {
+      position: relative;
+      width: 100%;
+      min-height: 360px;
+      border-radius: 24px;
+      border: 1px solid var(--tr-border);
+      overflow: hidden;
+      background: linear-gradient(180deg, rgba(255,255,255,0.7), rgba(241,247,250,0.5));
+      cursor: crosshair;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .amb-orb {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(28px);
+      will-change: transform;
+      pointer-events: none;
+    }
+    .amb-orb-1 {
+      width: 200px; height: 200px;
+      top: 12%; left: 8%;
+      background: radial-gradient(circle, rgba(6,182,212,0.55) 0%, rgba(6,182,212,0) 70%);
+    }
+    .amb-orb-2 {
+      width: 280px; height: 280px;
+      top: 30%; right: 10%;
+      background: radial-gradient(circle, rgba(125,211,252,0.5) 0%, rgba(125,211,252,0) 70%);
+    }
+    .amb-orb-3 {
+      width: 220px; height: 220px;
+      bottom: 6%; left: 35%;
+      background: radial-gradient(circle, rgba(196,181,253,0.55) 0%, rgba(196,181,253,0) 70%);
+    }
+    .amb-content {
+      position: relative;
+      z-index: 2;
+      text-align: center;
+      max-width: 460px;
+      pointer-events: none;
+    }
+    .amb-content h3 {
+      margin: 0 0 8px;
+      font-family: var(--tr-font-display);
+      font-weight: 800;
+      font-size: 28px;
+      letter-spacing: -0.02em;
+      color: var(--tr-text);
+    }
+    .amb-content p {
+      margin: 0;
+      color: var(--tr-text-70);
+      line-height: 1.55;
+    }
+    .amb-touch-note {
+      position: absolute;
+      bottom: 14px; left: 0; right: 0;
+      text-align: center;
+      font-family: var(--tr-font-mono);
+      font-size: 11px;
+      letter-spacing: 0.1em;
+      color: var(--tr-text-60);
+      text-transform: uppercase;
+    }
+
+    /* Footer */
+    .foot {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 24px 0 0;
+      border-top: 1px solid var(--tr-border);
+      flex-wrap: wrap; gap: 12px;
+      margin-top: 12px;
+      color: var(--tr-text-60);
+      font-size: 13px;
+    }
+    .foot em { font-style: normal; font-weight: 600; color: var(--tr-text-accent); }
+
+    @media (max-width: 800px) {
+      .page { padding: 48px 20px 100px; gap: 28px; }
+      .demo-stage { padding: 40px 20px; min-height: 240px; }
+      .scoped-chrome { width: 100%; height: 420px; }
+      .demo-head { padding: 20px 20px 14px; }
+    }
+  </style>
+</head>
+<body>
+  <div id="root"></div>
+
+  <script type="module" src="/src/transitions-main.jsx"></script>
+</body>
+</html>

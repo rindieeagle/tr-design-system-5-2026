@@ -15,6 +15,7 @@ export default defineConfig({
         mobileShowcase: resolve(__dirname, 'mobile-showcase.html'),
         microInteractions: resolve(__dirname, 'micro-interactions.html'),
         scrollStorytelling: resolve(__dirname, 'scroll-storytelling.html'),
+        transitions: resolve(__dirname, 'transitions.html'),
       },
     },
   },
