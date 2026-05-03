@@ -14,6 +14,7 @@ export default defineConfig({
         magneticButton: resolve(__dirname, 'magnetic-button.html'),
         mobileShowcase: resolve(__dirname, 'mobile-showcase.html'),
         microInteractions: resolve(__dirname, 'micro-interactions.html'),
+        scrollStorytelling: resolve(__dirname, 'scroll-storytelling.html'),
       },
     },
   },
