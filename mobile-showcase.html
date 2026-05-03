@@ -84,6 +84,11 @@
     /* bottom sheet within frame */
     .demo-sheet-wrap { position: relative; }
     .demo-sheet-wrap .tr-msheet { position: absolute; }
+
+    /* Drawer panel: when embedded in a .device mockup, size off the device
+       frame instead of the iframe viewport (default uses 86vw which overflows
+       the 320px mockup and clips link text on the left). */
+    .device .tr-mdrawer__panel { width: 100%; max-width: 280px; }
     .open-btn { display: inline-flex; align-items: center; gap: 6px; padding: 10px 16px; min-height: 44px; border-radius: 9999px; border: 1px solid var(--tr-border-hi); background: var(--tr-surface); font: 600 13px var(--tr-font-display); color: var(--tr-text); cursor: pointer; }
 
     /* tokens table */
