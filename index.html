@@ -311,8 +311,13 @@
     </main>
 
     <script>
-        // List of preview files
+        // List of preview files.
+        // Default: file is loaded from /preview/{file}.
+        // Use `path` (absolute, leading /) to point at a top-level entry (e.g. the
+        // Vite-bundled Magnetic Button demo) instead of a static preview card.
         const previews = [
+            { name: 'Magnetic Button', path: '/magnetic-button.html', group: 'Interactions' },
+            { name: 'Mobile Showcase', path: '/mobile-showcase.html', group: 'Interactions' },
             { name: 'Buttons', file: 'buttons.html', group: 'Components' },
             { name: 'Cards', file: 'cards.html', group: 'Components' },
             { name: 'Inputs', file: 'inputs.html', group: 'Components' },
@@ -376,22 +381,23 @@
                     const link = document.createElement('a');
                     link.className = 'nav-item';
                     link.textContent = item.name;
-                    link.dataset.file = item.file;
-                    
+                    const src = item.path || `preview/${item.file}`;
+                    link.dataset.file = item.file || item.path;
+
                     link.addEventListener('click', (e) => {
                         e.preventDefault();
-                        
+
                         // Update active state
                         document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
                         link.classList.add('active');
-                        
+
                         // Update UI
-                        currentTitle.innerHTML = `${item.name} <span class="current-preview-path" id="current-path">preview/${item.file}</span>`;
-                        
+                        currentTitle.innerHTML = `${item.name} <span class="current-preview-path" id="current-path">${src.replace(/^\//, '')}</span>`;
+
                         // Load iframe
                         emptyState.style.display = 'none';
                         iframe.style.display = 'block';
-                        iframe.src = `preview/${item.file}`;
+                        iframe.src = src;
                     });
                     
                     navList.appendChild(link);
