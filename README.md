@@ -25,13 +25,42 @@ A few rules of thumb:
 ```
 .
 ├── README.md                    ← You are here
-├── colors_and_type.css          ← Single source of truth: tokens, type stack, base classes
-├── mobile.css                   ← Mobile layer: responsive type, touch policy, mobile primitives
-├── assets/                      ← Logos, hero imagery, favicon
-└── preview/                     ← One HTML card per token group + UI-kit examples
+├── package.json                 ← Vite + React deps
+├── vite.config.js               ← Multi-page build config
+├── index.html                   ← Style guide entry (Vite-processed)
+├── magnetic-button.html         ← Motion demo entry (Vite-processed)
+├── mobile-showcase.html         ← Mobile primitives demo (Vite-processed)
+├── src/                         ← React components (App, MagneticButton, TweaksPanel)
+└── public/                      ← Static assets (copied as-is to dist/)
+    ├── colors_and_type.css      ← Single source of truth: tokens, type stack, base classes
+    ├── mobile.css               ← Mobile layer: responsive type, touch policy, mobile primitives
+    ├── assets/                  ← Logos, hero imagery, favicon
+    ├── fonts/                   ← Plus Jakarta Sans + Inter font files
+    ├── preview/                 ← One HTML card per token group + UI-kit examples
+    ├── screenshots/             ← Hero reference shots
+    └── uploads/                 ← Working uploads
 ```
 
-Every preview HTML is a thumbnail you can open standalone — open `preview/uikit-hero.html` to see the system in flight, or any of the foundation cards (`colors-*.html`, `type-*.html`, etc.) to inspect a single layer.
+Every preview HTML is a thumbnail you can open standalone — open `public/preview/uikit-hero.html` in dev or `/preview/uikit-hero.html` after build to see the system in flight, or any of the foundation cards (`colors-*.html`, `type-*.html`, etc.) to inspect a single layer.
+
+---
+
+## Development
+
+```bash
+npm install        # one-time setup
+npm run dev        # local dev server with hot reload (default: http://localhost:5173)
+npm run build      # production build → dist/
+npm run preview    # serve the dist/ build locally
+```
+
+### Deploying to Hostinger (auto-rebuild on git push)
+
+This project is wired for Hostinger's GitHub auto-deploy: each push to `main` triggers a Vite build on Hostinger's side and publishes `dist/` to the connected domain. To set up the connection:
+
+1. In Hostinger panel: connect this repo (`rindieeagle/tr-design-system-5-2026`) under Websites → Auto Deploy from GitHub
+2. Framework: Vite. Build command: `npm run build`. Publish directory: `dist`
+3. Push to `main` and Hostinger will rebuild + redeploy automatically
 
 ---
 

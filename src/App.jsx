@@ -1,5 +1,8 @@
-/* global React, ReactDOM, MagneticButton, TweaksPanel, useTweaks, TweakSection, TweakSlider, TweakToggle, TweakRadio */
-const { useState } = React;
+import React, { useState } from 'react';
+import MagneticButton from './MagneticButton.jsx';
+import {
+  TweaksPanel, useTweaks, TweakSection, TweakSlider, TweakToggle,
+} from './TweaksPanel.jsx';
 
 const DEFAULTS = /*EDITMODE-BEGIN*/{
   "radius": 50,
@@ -13,7 +16,7 @@ const DEFAULTS = /*EDITMODE-BEGIN*/{
   "label": "Book a session"
 }/*EDITMODE-END*/;
 
-function App() {
+export default function App() {
   const [tweaks, setTweak] = useTweaks(DEFAULTS);
   const [clicks, setClicks] = useState(0);
 
@@ -149,7 +152,7 @@ function App() {
       </footer>
 
       <TweaksPanel title="Tweaks">
-        <TweakSection title="Magnetic field">
+        <TweakSection label="Magnetic field">
           <TweakSlider
             label="Radius (px from edge)"
             min={0} max={200} step={1}
@@ -170,7 +173,7 @@ function App() {
           />
         </TweakSection>
 
-        <TweakSection title="Spring">
+        <TweakSection label="Spring">
           <TweakSlider
             label="Stiffness"
             min={50} max={1000} step={10}
@@ -185,7 +188,7 @@ function App() {
           />
         </TweakSection>
 
-        <TweakSection title="Debug">
+        <TweakSection label="Debug">
           <TweakToggle
             label="Show magnetic field"
             value={tweaks.showField}
@@ -201,5 +204,3 @@ function App() {
     </div>
   );
 }
-
-ReactDOM.createRoot(document.getElementById("root")).render(<App />);

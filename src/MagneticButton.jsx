@@ -1,6 +1,5 @@
-/* global React, Motion */
-const { useRef, useState, useCallback, useEffect } = React;
-const { motion, useMotionValue, useSpring, useTransform } = window.Motion;
+import React, { useRef, useState, useCallback, useEffect } from 'react';
+import { motion, useMotionValue, useSpring, useTransform } from 'framer-motion';
 
 /**
  * MagneticButton
@@ -11,7 +10,7 @@ const { motion, useMotionValue, useSpring, useTransform } = window.Motion;
  * - Press: scales to 0.95.
  * - Spring: stiffness 400, damping 20 (snappy).
  */
-function MagneticButton({
+export default function MagneticButton({
   children = "Book a session",
   radius = 50,
   strength = 0.35,
@@ -155,5 +154,3 @@ function MagneticButton({
     </div>
   );
 }
-
-window.MagneticButton = MagneticButton;
